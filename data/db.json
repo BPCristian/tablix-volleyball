@@ -1,0 +1,403 @@
+{
+  "users": [
+    {
+      "id": "u-org-1",
+      "username": "organizador",
+      "password": "123",
+      "role": "ORGANIZADOR",
+      "fullName": "Cristian Brieva (Comité Organizador)"
+    },
+    {
+      "id": "u-del-1",
+      "username": "delegado",
+      "password": "123",
+      "role": "DELEGADO",
+      "fullName": "Carlos Méndez (Delegado Club Sabanero)"
+    },
+    {
+      "id": "u-arb-1",
+      "username": "arbitro",
+      "password": "123",
+      "role": "ARBITRO",
+      "fullName": "Alberto López (Colegio de Árbitros Sucre)"
+    }
+  ],
+  "tournament": {
+    "id": "TOR-2026-01",
+    "name": "Copa Ciudad de Sincelejo — Voleibol Abierto 2026",
+    "category": "Mayores Masculino / Mixto",
+    "registrationOpen": true,
+    "registrationFee": 200000,
+    "courts": [
+      "Coliseo Las Delicias — Cancha Principal",
+      "Polideportivo Mochila — Cancha 1"
+    ],
+    "config": {
+      "setsFormat": 3,
+      "regularSetPoints": 25,
+      "tieBreakPoints": 15,
+      "minPointDiff": 2,
+      "pointsTable": {
+        "2-0": {
+          "winner": 3,
+          "loser": 0
+        },
+        "2-1": {
+          "winner": 2,
+          "loser": 1
+        }
+      }
+    }
+  },
+  "teams": [
+    {
+      "id": "T-01",
+      "name": "Club Sabanero VC",
+      "coach": "Jorge Luis Tovar",
+      "delegateName": "Carlos Méndez",
+      "delegateUserId": "u-del-1",
+      "status": "APPROVED",
+      "players": [
+        {
+          "id": "P-101",
+          "fullName": "Andrés Felipe Vergara",
+          "documentId": "1102845120",
+          "number": "4",
+          "position": "Punta"
+        },
+        {
+          "id": "P-102",
+          "fullName": "Sebastián Mercado",
+          "documentId": "1102899311",
+          "number": "7",
+          "position": "Armador"
+        },
+        {
+          "id": "P-103",
+          "fullName": "Camilo Andrés Paternina",
+          "documentId": "1102811402",
+          "number": "10",
+          "position": "Central"
+        },
+        {
+          "id": "P-104",
+          "fullName": "Luis Fernando Sierra",
+          "documentId": "1102877410",
+          "number": "12",
+          "position": "Opuesto"
+        },
+        {
+          "id": "P-105",
+          "fullName": "Mateo José Buelvas",
+          "documentId": "1102855190",
+          "number": "1",
+          "position": "Líbero"
+        },
+        {
+          "id": "P-106",
+          "fullName": "Daniel David Arroyo",
+          "documentId": "1102833901",
+          "number": "9",
+          "position": "Central"
+        }
+      ],
+      "payments": [
+        {
+          "id": "PAY-01",
+          "date": "2026-11-10",
+          "amount": 200000,
+          "concept": "Pago total inscripción"
+        }
+      ]
+    },
+    {
+      "id": "T-02",
+      "name": "Tigres de Sucre",
+      "coach": "Hernán Darío Gómez",
+      "delegateName": "Laura Sofía Álvarez",
+      "delegateUserId": "u-del-2",
+      "status": "APPROVED",
+      "players": [
+        {
+          "id": "P-201",
+          "fullName": "Juan Pablo Martínez",
+          "documentId": "1103112450",
+          "number": "3",
+          "position": "Punta"
+        },
+        {
+          "id": "P-202",
+          "fullName": "Kevin Stiven Bertel",
+          "documentId": "1103198712",
+          "number": "5",
+          "position": "Armador"
+        },
+        {
+          "id": "P-203",
+          "fullName": "Óscar Iván Madera",
+          "documentId": "1103154321",
+          "number": "8",
+          "position": "Opuesto"
+        },
+        {
+          "id": "P-204",
+          "fullName": "Diego Armando Ruiz",
+          "documentId": "1103176543",
+          "number": "11",
+          "position": "Central"
+        },
+        {
+          "id": "P-205",
+          "fullName": "Jhon Jairo Salgado",
+          "documentId": "1103143210",
+          "number": "2",
+          "position": "Líbero"
+        },
+        {
+          "id": "P-206",
+          "fullName": "Brayan José Pérez",
+          "documentId": "1103188990",
+          "number": "14",
+          "position": "Punta"
+        }
+      ],
+      "payments": [
+        {
+          "id": "PAY-02",
+          "date": "2026-11-12",
+          "amount": 120000,
+          "concept": "Primer abono inscripción"
+        }
+      ]
+    },
+    {
+      "id": "T-03",
+      "name": "Unisucre Vóley",
+      "coach": "Ricardo Monterroza",
+      "delegateName": "Valeria Díaz",
+      "delegateUserId": "u-del-3",
+      "status": "APPROVED",
+      "players": [
+        {
+          "id": "P-301",
+          "fullName": "Santiago José Pérez",
+          "documentId": "1102912345",
+          "number": "6",
+          "position": "Armador"
+        },
+        {
+          "id": "P-302",
+          "fullName": "Nicolás David Tuirán",
+          "documentId": "1102967890",
+          "number": "15",
+          "position": "Punta"
+        },
+        {
+          "id": "P-303",
+          "fullName": "Fabián Andrés Ortiz",
+          "documentId": "1102934567",
+          "number": "9",
+          "position": "Central"
+        },
+        {
+          "id": "P-304",
+          "fullName": "Esteban Camilo Herazo",
+          "documentId": "1102978901",
+          "number": "13",
+          "position": "Opuesto"
+        },
+        {
+          "id": "P-305",
+          "fullName": "Jesús David Romero",
+          "documentId": "1102945678",
+          "number": "4",
+          "position": "Líbero"
+        },
+        {
+          "id": "P-306",
+          "fullName": "Julián Andrés Benítez",
+          "documentId": "1102989012",
+          "number": "18",
+          "position": "Central"
+        }
+      ],
+      "payments": [
+        {
+          "id": "PAY-03",
+          "date": "2026-11-15",
+          "amount": 200000,
+          "concept": "Pago total inscripción"
+        }
+      ]
+    },
+    {
+      "id": "T-04",
+      "name": "Corozal Spike Club",
+      "coach": "Manuel José Pineda",
+      "delegateName": "Sofía Vergara",
+      "delegateUserId": "u-del-4",
+      "status": "APPROVED",
+      "players": [
+        {
+          "id": "P-401",
+          "fullName": "Carlos Eduardo Gil",
+          "documentId": "1104211223",
+          "number": "7",
+          "position": "Punta"
+        },
+        {
+          "id": "P-402",
+          "fullName": "Rafael Enrique Soto",
+          "documentId": "1104233445",
+          "number": "10",
+          "position": "Armador"
+        },
+        {
+          "id": "P-403",
+          "fullName": "Luis Miguel Castro",
+          "documentId": "1104255667",
+          "number": "11",
+          "position": "Central"
+        },
+        {
+          "id": "P-404",
+          "fullName": "Andrés Camilo Díaz",
+          "documentId": "1104277889",
+          "number": "14",
+          "position": "Opuesto"
+        },
+        {
+          "id": "P-405",
+          "fullName": "Mateo Alejandro Ruiz",
+          "documentId": "1104299001",
+          "number": "2",
+          "position": "Líbero"
+        },
+        {
+          "id": "P-406",
+          "fullName": "Jorge Eliécer Mora",
+          "documentId": "1104200112",
+          "number": "8",
+          "position": "Punta"
+        }
+      ],
+      "payments": []
+    }
+  ],
+  "matches": [
+    {
+      "id": "M-001",
+      "round": 1,
+      "teamAId": "T-01",
+      "teamBId": "T-04",
+      "status": "COMPLETED",
+      "date": "2026-11-22",
+      "time": "18:00",
+      "court": "Coliseo Las Delicias — Cancha Principal",
+      "sets": [
+        {
+          "a": 25,
+          "b": 19
+        },
+        {
+          "a": 25,
+          "b": 21
+        }
+      ],
+      "result": {
+        "valid": true,
+        "winner": "A",
+        "setsWonA": 2,
+        "setsWonB": 0,
+        "pointsForA": 50,
+        "pointsForB": 40,
+        "tablePtsA": 3,
+        "tablePtsB": 0,
+        "scoreKey": "2-0"
+      }
+    },
+    {
+      "id": "M-002",
+      "round": 1,
+      "teamAId": "T-02",
+      "teamBId": "T-03",
+      "status": "COMPLETED",
+      "date": "2026-11-22",
+      "time": "19:30",
+      "court": "Coliseo Las Delicias — Cancha Principal",
+      "sets": [
+        {
+          "a": 25,
+          "b": 22
+        },
+        {
+          "a": 21,
+          "b": 25
+        },
+        {
+          "a": 13,
+          "b": 15
+        }
+      ],
+      "result": {
+        "valid": true,
+        "winner": "B",
+        "setsWonA": 1,
+        "setsWonB": 2,
+        "pointsForA": 59,
+        "pointsForB": 62,
+        "tablePtsA": 1,
+        "tablePtsB": 2,
+        "scoreKey": "2-1"
+      }
+    },
+    {
+      "id": "M-003",
+      "round": 2,
+      "teamAId": "T-04",
+      "teamBId": "T-03",
+      "status": "SCHEDULED",
+      "date": "2026-11-25",
+      "time": "18:30",
+      "court": "Polideportivo Mochila — Cancha 1",
+      "sets": [],
+      "result": null
+    },
+    {
+      "id": "M-004",
+      "round": 2,
+      "teamAId": "T-01",
+      "teamBId": "T-02",
+      "status": "SCHEDULED",
+      "date": "2026-11-25",
+      "time": "20:00",
+      "court": "Coliseo Las Delicias — Cancha Principal",
+      "sets": [],
+      "result": null
+    },
+    {
+      "id": "M-005",
+      "round": 3,
+      "teamAId": "T-02",
+      "teamBId": "T-04",
+      "status": "PENDING_SCHEDULE",
+      "date": null,
+      "time": null,
+      "court": null,
+      "sets": [],
+      "result": null
+    },
+    {
+      "id": "M-006",
+      "round": 3,
+      "teamAId": "T-03",
+      "teamBId": "T-01",
+      "status": "PENDING_SCHEDULE",
+      "date": null,
+      "time": null,
+      "court": null,
+      "sets": [],
+      "result": null
+    }
+  ]
+}
