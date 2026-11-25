@@ -1,0 +1,140 @@
+:root {
+  --navy-900: #0f172a;
+  --navy-800: #1e293b;
+  --accent-blue: #2563eb;
+  --accent-gold: #f59e0b;
+  --bg-surface: #f1f5f9;
+}
+
+body {
+  background-color: var(--bg-surface);
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+  color: #1e293b;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.navbar-tablix {
+  background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 100%);
+  border-bottom: 3px solid var(--accent-gold);
+}
+
+.hero-banner {
+  background: linear-gradient(125deg, #0f172a 0%, #1e3a8a 60%, #1d4ed8 100%);
+  color: #ffffff;
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-banner::after {
+  content: "";
+  position: absolute;
+  right: -50px;
+  bottom: -60px;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(245,158,11,0.18) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+}
+
+.stat-pill {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  padding: 0.85rem 0.75rem;
+}
+
+.card-pro {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.04);
+}
+
+.nav-pills .nav-link {
+  color: #475569;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.6rem 1.15rem;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  transition: all 0.15s ease;
+}
+
+.nav-pills .nav-link.active {
+  background-color: var(--navy-900);
+  color: #ffffff;
+  border-color: var(--navy-900);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.18);
+}
+
+.team-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  color: #1d4ed8;
+  font-weight: 800;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #bfdbfe;
+  flex-shrink: 0;
+}
+
+.rank-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.82rem;
+}
+
+.rank-1 { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+.rank-2 { background: #e2e8f0; color: #334155; border: 1px solid #cbd5e1; }
+.rank-3 { background: #ffedd5; color: #9a3412; border: 1px solid #fed7aa; }
+.rank-other { background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }
+
+.match-card {
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid var(--accent-blue);
+  border-radius: 12px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.match-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+
+.match-card.completed {
+  border-left-color: #10b981;
+}
+
+.club-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #ffffff;
+  transition: border-color 0.15s ease;
+}
+
+.club-card:hover {
+  border-color: #93c5fd;
+}
+
+.matrix-cell { min-width: 72px; text-align: center; font-size: 0.82rem; }
+.matrix-diag { background-color: #f1f5f9 !important; color: #94a3b8; }
+
+footer {
+  margin-top: auto;
+  background-color: var(--navy-900);
+  color: #94a3b8;
+  border-top: 1px solid #1e293b;
+}
