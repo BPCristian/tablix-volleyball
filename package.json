@@ -1,0 +1,15 @@
+{
+  "name": "tablix-volleyball",
+  "version": "1.0.0",
+  "description": "Plataforma web modular para la gestión integral de torneos de voleibol en Sincelejo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test tests/tournamentEngine.test.js"
+  },
+  "author": "Cristian Andrés Brieva Pacheco & Alberto Antonio López Monterroza",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
