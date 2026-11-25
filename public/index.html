@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TABLIX — Plataforma de Gestión de Torneos de Voleibol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: {
+            brand: { 900: '#090d16', 800: '#111827', 700: '#1e293b', accent: '#f59e0b', blue: '#2563eb' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #f8fafc; color: #0f172a; }
+    .glass-nav { background: rgba(9, 13, 22, 0.94); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .hero-mesh {
+      background-color: #090d16;
+      background-image:
+        radial-gradient(at 88% 15%, rgba(37, 99, 235, 0.38) 0px, transparent 50%),
+        radial-gradient(at 12% 85%, rgba(245, 158, 11, 0.18) 0px, transparent 50%);
+    }
+    .tab-btn.active { background-color: #0f172a; color: #ffffff; border-color: #0f172a; box-shadow: 0 4px 12px rgba(15,23,42,0.15); }
+    .matrix-diag { background-color: #f1f5f9; color: #94a3b8; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-400 selection:text-slate-900">
+
+  <!-- Navbar -->
+  <header class="glass-nav sticky top-0 z-40 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 text-slate-950 font-extrabold flex items-center justify-center shadow-lg shadow-amber-500/20 tracking-tighter">
+          TX
+        </div>
+        <div>
+          <span class="font-extrabold tracking-tight text-lg">TABLIX</span>
+          <span class="hidden sm:inline-block text-xs text-slate-400 ml-2 border-l border-slate-700 pl-2">Gestión Deportiva • Sincelejo</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2.5">
+        <span id="roleBadge" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-800/90 border border-slate-700 text-slate-200">
+          <i data-lucide="eye" class="w-3.5 h-3.5 text-amber-400"></i> Público General
+        </span>
+        <button id="btnOpenLogin" onclick="openModal('loginModal')" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-amber-400 hover:bg-amber-300 text-slate-950 transition shadow-sm">
+          <i data-lucide="shield-check" class="w-4 h-4"></i> Iniciar Sesión
+        </button>
+        <button id="btnLogout" onclick="logout()" class="hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-rose-600/90 text-white border border-slate-700 transition">
+          <i data-lucide="log-out" class="w-3.5 h-3.5"></i> Salir
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1">
+    <div id="alertBox" class="mb-4"></div>
+
+    <!-- Hero Banner -->
+    <section class="hero-mesh rounded-3xl p-6 sm:p-8 text-white shadow-xl shadow-slate-900/10 mb-6 border border-slate-800">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div class="space-y-2.5 max-w-2xl">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-400 text-slate-950">
+              <i data-lucide="trophy" class="w-3 h-3"></i> Torneo Oficial
+            </span>
+            <span id="regStatusBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              Inscripciones Abiertas
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-white/10 text-slate-300">
+              Sincelejo, Sucre
+            </span>
+          </div>
+          <h1 id="tourName" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+            Cargando competencia...
+          </h1>
+          <p id="tourMeta" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 sm:gap-4 shrink-0">
+          <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl px-4 py-3 text-center min-w-[88px]">
+            <div id="kpiTeams" class="text-2xl font-extrabold text-white">0</div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mt-0.5">Clubes</div>
+          </div>
+          <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl px-4 py-3 text-center min-w-[88px]">
+            <div id="kpiMatches" class="text-2xl font-extrabold text-amber-400">0</div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mt-0.5">Partidos</div>
+          </div>
+          <div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl px-4 py-3 text-center min-w-[88px]">
+            <div id="kpiFormat" class="text-2xl font-extrabold text-blue-400">3</div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mt-0.5">Sets</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navegación RBAC (Solo visible al iniciar sesión) -->
+    <nav id="mainTabs" class="hidden flex flex-wrap gap-2 mb-6">
+      <button onclick="switchTab('tabPublic', this)" class="tab-btn active inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 border border-slate-200 transition">
+        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Portal Público
+      </button>
+      <button onclick="switchTab('tabConfig', this)" class="tab-btn role-only role-ORGANIZADOR hidden inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 border border-slate-200 transition">
+        <i data-lucide="sliders" class="w-4 h-4"></i> Reglas, Matriz y Programación
+      </button>
+      <button onclick="switchTab('tabTeams', this)" class="tab-btn role-only role-ORGANIZADOR role-DELEGADO hidden inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 border border-slate-200 transition">
+        <i data-lucide="users" class="w-4 h-4"></i> Clubes, Nóminas y Cartera
+      </button>
+      <button onclick="switchTab('tabReferee', this)" class="tab-btn role-only role-ORGANIZADOR role-ARBITRO hidden inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 border border-slate-200 transition">
+        <i data-lucide="clipboard-check" class="w-4 h-4"></i> Mesa Arbitral y Actas
+      </button>
+    </nav>
+
+    <!-- VISTA 1: PORTAL PÚBLICO -->
+    <div id="tabPublic" class="tab-panel space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Tabla de Posiciones -->
+        <div id="standingsCapture" class="lg:col-span-7 bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+              <div>
+                <h2 class="text-base sm:text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                  <i data-lucide="bar-chart-3" class="w-5 h-5 text-blue-600"></i> Tabla Oficial de Posiciones
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">Criterios: Puntos (PTS), Partidos Ganados, Diferencia de Sets y Ratio</p>
+              </div>
+              <button onclick="exportStandingsPNG()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition">
+                <i data-lucide="camera" class="w-3.5 h-3.5"></i> Exportar PNG
+              </button>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    <th class="py-3 px-2">Pos</th>
+                    <th class="py-3 px-2">Club / Equipo</th>
+                    <th class="py-3 px-2 text-center text-slate-900">PTS</th>
+                    <th class="py-3 px-2 text-center">PJ</th>
+                    <th class="py-3 px-2 text-center">PG</th>
+                    <th class="py-3 px-2 text-center">PE</th>
+                    <th class="py-3 px-2 text-center">PP</th>
+                    <th class="py-3 px-2 text-center">SF</th>
+                    <th class="py-3 px-2 text-center">SC</th>
+                    <th class="py-3 px-2 text-center">Dif</th>
+                    <th class="py-3 px-2 text-center">Ratio</th>
+                  </tr>
+                </thead>
+                <tbody id="standingsBody" class="divide-y divide-slate-100 text-sm"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-4 text-xs text-slate-500">
+            <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Líder del Torneo</span>
+            <span class="inline-flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Zona de Clasificación</span>
+          </div>
+        </div>
+
+        <!-- Encuentros y Resultados -->
+        <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+          <div class="flex items-center justify-between gap-2 mb-1">
+            <h2 class="text-base sm:text-lg font-extrabold text-slate-900 flex items-center gap-2">
+              <i data-lucide="calendar-days" class="w-5 h-5 text-blue-600"></i> Encuentros y Resultados
+            </h2>
+            <select id="matchFilter" onchange="renderAll()" class="text-xs font-semibold bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-1.5 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="ALL">Todos</option>
+              <option value="COMPLETED">Finalizados</option>
+              <option value="SCHEDULED">Próximos</option>
+            </select>
+          </div>
+          <p class="text-xs text-slate-500 mb-4">Marcadores oficiales y programación en escenarios</p>
+          <div id="publicMatchesList" class="space-y-3 max-h-[430px] overflow-y-auto pr-1"></div>
+        </div>
+      </div>
+
+      <!-- Directorio Público de Clubes y Escenarios -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+          <h2 class="text-base sm:text-lg font-extrabold text-slate-900 flex items-center gap-2">
+            <i data-lucide="shield" class="w-5 h-5 text-blue-600"></i> Clubes Participantes Habilitados
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5 mb-4">Equipos avalados por el comité organizador (consulte la plantilla oficial)</p>
+          <div id="publicClubsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </div>
+
+        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 sm:p-6">
+          <h2 class="text-base sm:text-lg font-extrabold text-slate-900 flex items-center gap-2">
+            <i data-lucide="map-pin" class="w-5 h-5 text-blue-600"></i> Escenarios Oficiales
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5 mb-4">Sedes habilitadas en Sincelejo</p>
+          <div id="publicCourtsList" class="space-y-2.5"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISTA 2: ORGANIZADOR (REGLAS, MATRIZ Y PROGRAMACIÓN) -->
+    <div id="tabConfig" class="tab-panel hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+            <h2 class="text-base font-extrabold text-slate-900 mb-4 flex items-center gap-2">
+              <i data-lucide="settings-2" class="w-5 h-5 text-blue-600"></i> Parametrización Reglamentaria
+            </h2>
+            <form id="configForm" class="space-y-3 text-xs">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Nombre del Torneo</label>
+                <input type="text" id="cfgName" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:outline-none focus:border-blue-600">
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Modalidad de Sets</label>
+                  <select id="cfgFormat" class="w-full rounded-xl border border-slate-300 px-3 py-2">
+                    <option value="1">1 Set Único</option>
+                    <option value="2">2 Sets Fijos (con empate)</option>
+                    <option value="3">Al mejor de 3 Sets</option>
+                    <option value="5">Al mejor de 5 Sets</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Diferencia Mínima</label>
+                  <select id="cfgDiff" class="w-full rounded-xl border border-slate-300 px-3 py-2">
+                    <option value="2">2 puntos (FIVB)</option>
+                    <option value="1">1 punto (Muerte súbita)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Puntos Set Regular</label>
+                  <input type="number" id="cfgRegPts" min="5" value="25" class="w-full rounded-xl border border-slate-300 px-3 py-2">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Puntos Set Decisivo</label>
+                  <input type="number" id="cfgTiePts" min="5" value="15" class="w-full rounded-xl border border-slate-300 px-3 py-2">
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Valor Inscripción (COP)</label>
+                  <input type="number" id="cfgFee" min="0" class="w-full rounded-xl border border-slate-300 px-3 py-2">
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Inscripciones</label>
+                  <select id="cfgRegOpen" class="w-full rounded-xl border border-slate-300 px-3 py-2">
+                    <option value="true">Abiertas</option>
+                    <option value="false">Cerradas</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Escenarios / Canchas (separadas por coma)</label>
+                <input type="text" id="cfgCourts" class="w-full rounded-xl border border-slate-300 px-3 py-2">
+              </div>
+              <button type="submit" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition">Guardar Parámetros</button>
+            </form>
+            <div class="border-t border-slate-100 my-4"></div>
+            <div class="flex gap-2">
+              <button onclick="generateFixture()" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition">Generar Sorteo Berger</button>
+              <button onclick="resetFixture()" class="px-4 py-2.5 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 text-xs font-bold transition">Reiniciar</button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+            <h3 class="text-sm font-extrabold text-slate-900 mb-1">Matriz de Control Interno (Berger)</h3>
+            <p class="text-xs text-slate-500 mb-3">Vista técnica exclusiva para auditoría del comité organizador</p>
+            <div id="crossMatrixContainer" class="overflow-x-auto"></div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+          <h2 class="text-base font-extrabold text-slate-900 mb-1 flex items-center gap-2">
+            <i data-lucide="calendar-check" class="w-5 h-5 text-blue-600"></i> Asignación de Horarios y Canchas
+          </h2>
+          <p class="text-xs text-slate-500 mb-4">Detección automática de traslapes en escenarios deportivos</p>
+          <div id="schedulerContainer" class="space-y-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISTA 3: EQUIPOS, NÓMINAS Y CARTERA -->
+    <div id="tabTeams" class="tab-panel hidden space-y-6">
+      <div id="financeSummaryRow" class="role-only role-ORGANIZADOR hidden grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-5 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+          <h2 class="text-base font-extrabold text-slate-900 mb-4 flex items-center gap-2">
+            <i data-lucide="user-plus" class="w-5 h-5 text-blue-600"></i> Inscripción de Club y Nómina
+          </h2>
+          <form id="teamForm" class="space-y-3 text-xs">
+            <input type="text" id="teamName" placeholder="Nombre del Club / Equipo" required class="w-full rounded-xl border border-slate-300 px-3 py-2">
+            <div class="grid grid-cols-2 gap-2">
+              <input type="text" id="teamCoach" placeholder="Director Técnico" class="w-full rounded-xl border border-slate-300 px-3 py-2">
+              <input type="text" id="teamDelegate" placeholder="Delegado Oficial" class="w-full rounded-xl border border-slate-300 px-3 py-2">
+            </div>
+            <label class="block font-bold text-slate-700 pt-1">Plantilla de Deportistas (Nombre | Dorsal | Posición)</label>
+            <div id="playersInputs" class="space-y-2"></div>
+            <button type="button" onclick="addPlayerRow()" class="w-full py-2 rounded-xl border border-dashed border-slate-300 text-slate-600 hover:bg-slate-50 font-semibold">+ Añadir Deportista</button>
+            <button type="submit" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold transition">Enviar Inscripción</button>
+          </form>
+        </div>
+
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+          <h2 class="text-base font-extrabold text-slate-900 mb-4 flex items-center gap-2">
+            <i data-lucide="wallet" class="w-5 h-5 text-blue-600"></i> Clubes Inscritos, Aval y Estado de Cartera
+          </h2>
+          <div id="teamsListContainer" class="space-y-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISTA 4: ÁRBITRO -->
+    <div id="tabReferee" class="tab-panel hidden">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+        <h2 class="text-base font-extrabold text-slate-900 mb-1 flex items-center gap-2">
+          <i data-lucide="clipboard-list" class="w-5 h-5 text-blue-600"></i> Encuentros Programados para Juzgamiento
+        </h2>
+        <p class="text-xs text-slate-500 mb-4">Capture parciales directamente o abra la planilla digital de mesa</p>
+        <div id="refereeMatchesContainer" class="space-y-3"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-950 text-slate-400 border-t border-slate-800 py-4 mt-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs">
+      <div><strong class="text-white">TABLIX</strong> — Plataforma Integral de Torneos de Voleibol • Sincelejo, Sucre</div>
+      <div>Ingeniería de Software • Node.js + Express + Tailwind CSS</div>
+    </div>
+  </footer>
+
+  <!-- Modal Nómina Pública -->
+  <div id="rosterModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden border border-slate-200">
+      <div class="bg-slate-900 text-white px-5 py-3.5 flex items-center justify-between">
+        <h3 id="rosterModalTitle" class="text-sm font-bold">Nómina Oficial</h3>
+        <button onclick="closeModal('rosterModal')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <div id="rosterModalBody" class="p-5"></div>
+    </div>
+  </div>
+
+  <!-- Modal Login -->
+  <div id="loginModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full shadow-2xl overflow-hidden border border-slate-200">
+      <div class="bg-slate-900 text-white px-5 py-4 flex items-center justify-between">
+        <h3 class="text-sm font-bold flex items-center gap-2"><i data-lucide="shield-lock" class="w-4 h-4 text-amber-400"></i> Autenticación RBAC — TABLIX</h3>
+        <button onclick="closeModal('loginModal')" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+      </div>
+      <div class="p-5">
+        <form id="loginForm" class="space-y-3 text-xs">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Usuario Institucional</label>
+            <input type="text" id="loginUser" placeholder="Ej: organizador" required class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Contraseña</label>
+            <input type="password" id="loginPass" placeholder="••••••" required class="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm">
+          </div>
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition">Ingresar al Sistema</button>
+        </form>
+        <div class="mt-4 pt-3 border-t border-slate-100">
+          <p class="text-[11px] font-semibold text-slate-500 mb-2">Acceso rápido por rol (clave: <code class="text-slate-900">123</code>):</p>
+          <div class="grid grid-cols-3 gap-1.5">
+            <button type="button" onclick="fillDemo('organizador')" class="py-1.5 rounded-lg border border-slate-200 hover:bg-slate-900 hover:text-white text-[11px] font-bold transition">Organizador</button>
+            <button type="button" onclick="fillDemo('delegado')" class="py-1.5 rounded-lg border border-slate-200 hover:bg-slate-900 hover:text-white text-[11px] font-bold transition">Delegado</button>
+            <button type="button" onclick="fillDemo('arbitro')" class="py-1.5 rounded-lg border border-slate-200 hover:bg-slate-900 hover:text-white text-[11px] font-bold transition">Árbitro</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
